@@ -180,6 +180,10 @@ quertz.forEach((letter, index) => {
     lamp.className = "lamp"
     plugboardPlug.className = "plug"
     plugboardButton.className = "plugButton"
+
+    key.ariaLabel="keyboard button "+letter
+    plugboardButton.ariaLabel = "plug board button "+ letter
+
     //value doesnt actually serve any functionality besides easily associating the letter with the button
     plugboardButton.value = letter
 
