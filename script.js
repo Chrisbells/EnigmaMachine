@@ -19,7 +19,6 @@ letterIndex = (letter) => letter.charCodeAt(0) - 65
 
 class Rotor {
     constructor(rotorType, initPosition) {
-        console.log(rotorConfigs)
         this.map = rotorConfigs[rotorType][0].split("")
         this.turnover = letterIndex(rotorConfigs[rotorType][1])
         this.position = letterIndex(initPosition)
@@ -123,9 +122,7 @@ class Enigma {
             path.push(out)
         }
         pair = this.plugboard.getPairedLetter(out)
-        console.log(pair)
         out = pair != -1 ? pair : out
-        console.log(path)
         return { "out": out, "path": path }
     }
     increment() {
@@ -202,7 +199,23 @@ quertz.forEach((letter, index) => {
     lamps.push(lamp)
     plugboardButtons.push(plugboardButton)
 })
-
+//position input behavior
+document.querySelectorAll(".rotorPositonOption").forEach(el=>{
+    el.addEventListener("focus",el=>{
+        el.target.placeholder=el.target.value
+        el.target.value=""
+    })
+    el.addEventListener("input",el=>{
+        el.target.value=el.target.value.toUpperCase()
+        el.target.blur()
+    })
+    el.addEventListener("focusout",el=>{
+        if (el.target.value==""){
+            el.target.value=el.target.placeholder
+        }
+        el.target.placeholder=""
+    })
+})
 //physical keyboard support
 document.querySelector("#keyboardButton").addEventListener("keypress", (e) => {
     if (/[a-z]/.test(e.key)) {
@@ -245,7 +258,6 @@ function handlePlugboardChange(button) {
     //if clicked on value in pair and there is no pair being added
     if (enigma.plugboard.pointer == -1 && button.classList.value.includes("plugBoardSelection")) {
         let pairInfo = enigma.plugboard.removePair(button.value)
-        console.log(pairInfo)
         pairInfo.pair.split("").forEach(letter => {
             plugboardButtons[quertz.indexOf(letter)].classList.remove("plugBoardSelection" + pairInfo.index)
         })

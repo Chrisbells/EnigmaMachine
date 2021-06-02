@@ -100,7 +100,10 @@ a:visited {
 .rotorPositonOption {
     width: 1em;
 }
-
+.rotorPositonOption::placeholder{
+/* placeholder used as temp data */
+    display: none;
+}
 #updateSettings {
     margin-top: 1vh;
     background-color: #ffffff30;
