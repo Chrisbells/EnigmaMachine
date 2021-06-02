@@ -224,10 +224,6 @@ document.querySelector("#updateSettings").addEventListener("click", () => {
     inHistory.innerHTML = outHistory.innerHTML = ""
 })
 
-document.querySelectorAll("")
-
-
-
 function handleInput(letter) {
     key = keys[quertz.indexOf(letter)]
     key.classList.add("pressed")
