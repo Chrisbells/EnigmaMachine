@@ -30,7 +30,7 @@ a:visited {
 
 #informationText {
     height: 75vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #informationText::-webkit-scrollbar {
