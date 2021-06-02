@@ -101,8 +101,8 @@ a:visited {
     width: 1em;
 }
 .rotorPositonOption::placeholder{
-/* placeholder used as temp data */
-    display: none;
+/* placeholder used for temp data so doesnt show */
+    color: rgba(255, 255, 255, 0);
 }
 #updateSettings {
     margin-top: 1vh;
