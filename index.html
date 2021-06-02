@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Enigma Machine</title>
+</head>
+
+<body>
+    <div id="grid">
+        <div id="information">
+            <div id="informationText">
+                This is an emulator of the enigma 1 machine which was used by Germany in ww2. The machine works by passing an electrical signal through rotors that are wired to swap around the letters. When a letter is typed the first rotor spins, eventually when the first rotor fully spins the next one over turns and so on.
+                <br><br>
+                To use this set the rotors and their positions and press update settings or use the defaults. You can also set up the plugboard by creating pairs by pressing the buttons at the bottom clicking the bottom keys will input a letter and you'll see the matching letter light up
+                <br><br>
+                The main issue with the enigma machine was the fact that a character input could never have itself as the output this means that unlike modern cryptography it isn't completely random. This meant that people trying to crack the code could guess a phrase that will come up in the message and then check for where the letters don't match giving a good starting point to crack it. This vulnerability and approach lead to a machine called the Bombe which automatically guessed and checked through enigma configuration combinations.
+                <br><br>
+                Another issue with the enigma machine was how the keys or the machine configuration was key distribution. If a spy got their hands on the keys and shared them there was nothing Germany could do if they Were unaware. Modern cryptography and encryption rely on public and private keys with a public key you can encrypt but to decrypt the private key is required. This allows 2 parties talking to each other to create a private-public key pair and share their public keys and not have to worry if anyone gets their hands on the public key. The only issue is that doing so on mechanical hardware would've been extremely difficult
+            </div>
+            <div id="credits">
+                Resources used</br>
+                <a href="https://www.cryptomuseum.com/crypto/enigma/">cryptomuseum.com/crypto/enigma/</a></br>
+                <a href="https://brilliant.org/wiki/enigma-machine">brilliant.org/wiki/enigma-machine</a>            
+            </div>
+        </div>
+        <div id="setup">
+            <div id="rotorSettings">
+                <div>
+                    <p>Left Rotor</p>
+                    <span>Type</span>
+                    <select class="rotorOption" readonly>
+                        <option value="0" selected >I</option>
+                        <option value="1">II</option>
+                        <option value="2">III</option>
+                        <option value="3">IV</option>
+                        <option value="4">V</option>
+                    </select><br>
+                    <span>Position</span><input class="rotorPositonOption" value="A">
+                </div>
+                <div>
+                    <p>Middle Rotor</p>
+                    <span>Type</span>
+                    <select class="rotorOption" readonly>
+                        <option value="0">I</option>
+                        <option value="1" selected >II</option>
+                        <option value="2">III</option>
+                        <option value="3">IV</option>
+                        <option value="4">V</option>
+                    </select><br>
+                    <span>Position</span><input class="rotorPositonOption" value="A">
+                </div>
+                <div>
+                    <p>Right Rotor</p>
+                    <span>Type</span>
+                    <select class="rotorOption" readonly>
+                        <option value="0">I</option>
+                        <option value="1">II</option>
+                        <option value="2" selected>III</option>
+                        <option value="3">IV</option>
+                        <option value="4">V</option>
+                    </select><br>
+                    <span>Position</span><input class="rotorPositonOption" value="A">
+                </div>
+                <div>
+                    <p>Reflector</p>
+                    <span>Type</span>
+                    <select id="reflectorOption">
+                        <option value="0">A</option>
+                        <option value="1" selected>B</option>
+                        <option value="2">C</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="updateSettings">Update Settings</button>
+        </div>
+        <div id="io">
+            <div id="rotorPositionsDisplay"></div>
+            <div id="lampboard">
+                <div class="lampRow"></div>
+                <div class="lampRow"></div>
+                <div class="lampRow"></div>
+            </div>
+            <div id="keyboard">
+                <div class="keyRow"></div>
+                <div class="keyRow"></div>
+                <div class="keyRow"></div>
+            </div>
+            <button id="keyboardButton"> Click to use <br>physical keyboard</button>
+            <div id="plugboard">
+                <div class="plugRow"></div>
+                <div class="plugRow"></div>
+                <div class="plugRow"></div>
+            </div>
+        </div>
+        <div id="ioHistory">
+            <h4>You have entered</h4>
+            <p id="inputHistory"></p>
+            <h4>Ciphered text</h4>
+            <p id="outputHistory"></p>
+
+        </div>
+        <div id="internals">
+            <div></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

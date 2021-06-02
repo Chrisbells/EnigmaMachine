@@ -1,0 +1,269 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: #232323;
+    color: #fff;
+}
+
+a {
+    color: #fff;
+}
+
+a:visited {
+    color: #fff;
+}
+
+#grid {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 30% 40% 30%;
+    grid-template-rows: auto 1fr 1fr;
+}
+
+#information {
+    grid-column: 1/2;
+    grid-row: 1/3;
+    padding: 20px;
+}
+
+#informationText {
+    height: 75vh;
+    overflow-y: scroll;
+}
+
+#informationText::-webkit-scrollbar {
+    width: 5px;
+}
+
+#informationText::-webkit-scrollbar-track {
+    background: #0000;
+    border-radius: 5px;
+    margin-bottom: 50vh;
+    border: 1px solid #333;
+}
+
+#informationText::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 5px;
+}
+
+#credits {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
+#setup {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    text-align: center;
+}
+
+#io {
+    text-align: center;
+    grid-column: 2/3;
+    grid-row: 2/4;
+}
+
+#ioHistory {
+    grid-column: 3/4;
+    grid-row: 1/3;
+}
+
+#internals {
+    grid-column: 3/4;
+    grid-row: 3/4;
+}
+
+#rotorSettings {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#rotorSettings>div span {
+    padding-right: 10px;
+    float: left;
+}
+
+.rotorPositonOption, .rotorOption, #reflectorOption {
+    outline: none;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    display: inline;
+    float: right;
+    margin: 4px;
+}
+
+.rotorPositonOption {
+    width: 1em;
+}
+
+#updateSettings {
+    margin-top: 1vh;
+    background-color: #ffffff30;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 40px;
+}
+
+#keyboard, #lampboard, #plugboard {
+    display: flex;
+    flex-direction: column;
+    padding: 1vh 0;
+}
+
+.keyRow, .lampRow, .plugRow {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+.keyRow:nth-of-type(2)>button:first-of-type, .lampRow:nth-of-type(2)>div:first-of-type {
+    margin-left: calc(50% / 9);
+}
+
+.keyRow:nth-of-type(2)>button:last-of-type, .lampRow:nth-of-type(2)>div:last-of-type {
+    margin-right: calc(50% / 9);
+}
+
+.plugRow:nth-of-type(2)>div:first-of-type {
+    margin-left: calc(50% / 9);
+}
+
+.plugRow:nth-of-type(2)>div:last-of-type {
+    margin-right: calc(50% / 9);
+}
+
+.key, .lamp, .plugButton {
+    color: #ddd;
+    border-radius: 50%;
+    height: 0;
+    padding-top: 0;
+    transition: 1s;
+}
+
+.key, .lamp {
+    border: #ddd 2px solid;
+    padding-bottom: calc(9% - 4px);
+    width: 9%;
+    position: relative;
+}
+
+.plug {
+    width: 10%;
+}
+
+.plug>span {
+    display: block;
+}
+
+.plug>button {
+    border: none;
+    width: 30%;
+    padding-top: 30%;
+    padding-bottom: 0;
+}
+
+.key>span, .lamp>span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 2vw;
+    line-height: 1em;
+    transform: translate(-50%, -50%);
+}
+
+.key {
+    background: #ffffff30;
+}
+
+.lamp {
+    /* make key and lamp use the same box sizing type so they can be the same size without calc() (besides lineheight)
+    also makes other sizing easier as theres no worries about accounting for padding and border*/
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #ffffff10;
+    color: #000;
+}
+
+.on {
+    background: radial-gradient(#ff5, #ff9);
+    transition: .1s;
+}
+
+.pressed {
+    transition: .1s;
+    transform: translateY(3px) scale(.97);
+}
+
+#keyboardButton {
+    margin: 0 auto;
+    padding: 4px 15px;
+    background-color: #ffffff30;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 40px;
+}
+
+#ioHistory h4 {
+    text-align: center;
+    margin: 5px;
+}
+
+#ioHistory>p {
+    display: block;
+    margin: 0 auto;
+    background: #fff1;
+    border-radius: 10px;
+    width: 90%;
+    padding: 2%;
+    height: 18vh;
+    word-break: break-all
+}
+
+.plugBoardSelection0 {
+    background: #4AD2F7;
+}
+
+.plugBoardSelection1 {
+    background: #4B349E;
+}
+
+.plugBoardSelection2 {
+    background: #E9FF70;
+}
+
+.plugBoardSelection3 {
+    background: #2ecc71;
+}
+
+.plugBoardSelection4 {
+    background: #F08700;
+}
+
+.plugBoardSelection5 {
+    background: #CC2936;
+}
+
+.plugBoardSelection6 {
+    background: #2541B2;
+}
+
+.plugBoardSelection7 {
+    background: #E88873;
+}
+
+.plugBoardSelection8 {
+    background: #B3B7EE;
+}
+
+.plugBoardSelection9 {
+    background: #B5FFE1;
+}
