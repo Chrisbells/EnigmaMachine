@@ -18,8 +18,8 @@ a:visited {
 #grid {
     display: grid;
     height: 100vh;
-    grid-template-columns: 30% 40% 30%;
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-columns: 25% 35% 40%;
+    grid-template-rows: auto 3fr 4fr;
 }
 
 #information {
@@ -38,9 +38,8 @@ a:visited {
 }
 
 #informationText::-webkit-scrollbar-track {
-    background: #0000;
+    background: #fff1;
     border-radius: 5px;
-    margin-bottom: 50vh;
     border: 1px solid #333;
 }
 
@@ -100,10 +99,12 @@ a:visited {
 .rotorPositonOption {
     width: 1em;
 }
-.rotorPositonOption::placeholder{
-/* placeholder used for temp data so doesnt show */
+
+.rotorPositonOption::placeholder {
+    /* placeholder used for temp data so doesnt show */
     color: rgba(255, 255, 255, 0);
 }
+
 #updateSettings {
     margin-top: 1vh;
     background-color: #ffffff30;
@@ -215,9 +216,9 @@ a:visited {
     border-radius: 40px;
 }
 
-#ioHistory h4 {
+#ioHistory h5 {
     text-align: center;
-    margin: 5px;
+    margin: 3px;
 }
 
 #ioHistory>p {
@@ -227,8 +228,30 @@ a:visited {
     border-radius: 10px;
     width: 90%;
     padding: 2%;
-    height: 18vh;
+    height: 10vh;
     word-break: break-all
+}
+
+#internals {
+    position: relative;
+}
+
+#internals .letterRow {
+    display: flex;
+    justify-content: space-around;
+    font-size: 20px;
+    margin: 1vh 0;
+}
+
+#internals .internalLabel {
+    color: #aaa;
+    font-size: 10px;
+}
+
+#internals svg {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .plugBoardSelection0 {

@@ -20,13 +20,13 @@
     <div id="grid">
         <div id="information">
             <div id="informationText">
-                This is an emulator of the enigma 1 machine which was used by Germany in ww2. The machine works by passing an electrical signal through rotors that are wired to swap around the letters. When a letter is typed the first rotor spins, eventually when the first rotor fully spins the next one over turns and so on.
+                This is an emulator of the enigma 1 machine which was used by Germany in WW2. The machine works by passing an electrical signal through rotors that are wired to swap around the letters. When a letter is typed the first rotor spins, eventually when the first rotor fully spins the next one over turns and so on.
                 <br><br>
-                To use this set the rotors and their positions and press update settings or use the defaults. You can also set up the plugboard by creating pairs by pressing the buttons at the bottom clicking the bottom keys will input a letter and you'll see the matching letter light up
+                To use this emulator set the rotors and their positions and press update settings or use the defaults. You can also set up the plugboard by creating pairs by pressing the buttons at the bottom. Clicking the bottom keys will input a letter and you'll see the matching letter light up
                 <br><br>
-                The main issue with the enigma machine was the fact that a character input could never have itself as the output this means that unlike modern cryptography it isn't completely random. This meant that people trying to crack the code could guess a phrase that will come up in the message and then check for where the letters don't match giving a good starting point to crack it. This vulnerability and approach lead to a machine called the Bombe which automatically guessed and checked through enigma configuration combinations.
+                The main issue with the enigma machine was the fact that a character input could never have itself as the output this means that unlike modern cryptography it isn't completely random. Because of this vulnerability, Alan Turing and Gordon Welchman created the bombe machine which automatically guessed and checked through enigma settings to find the correct setting. The way that it would work is to first find a section of the message that can be the ciphered version of a guessed phrase which was done by making sure none of the characters match. Once that section was found the bombe used 36 different enigmas to try every combination. If the guessed phrase and the phrase deciphered with those settings matched then the correct settings were found.
                 <br><br>
-                Another issue with the enigma machine was how the keys or the machine configuration was key distribution. If a spy got their hands on the keys and shared them there was nothing Germany could do if they Were unaware. Modern cryptography and encryption rely on public and private keys with a public key you can encrypt but to decrypt the private key is required. This allows 2 parties talking to each other to create a private-public key pair and share their public keys and not have to worry if anyone gets their hands on the public key. The only issue is that doing so on mechanical hardware would've been extremely difficult
+                Another issue with the enigma machine was how the keys or the machine configurations were distributed. If a spy got their hands on the configurations and shared them there was nothing Germany could do if they were unaware. Modern cryptography and encryption rely on public and private keys, with a public key you can encrypt data but to decrypt the encrypted data the private key is required. This allows 2 parties talking to each other to create a private-public key pair and share their public keys, not having to worry much if anyone gets their hands on the public key. The only issue is that doing so back then on mechanical hardware would've been extremely difficult
             </div>
             <div id="credits">
                 Resources used</br>
@@ -105,14 +105,29 @@
             </div>
         </div>
         <div id="ioHistory">
-            <h4>You have entered</h4>
+            <h5>You have entered</h5>
             <p id="inputHistory"></p>
-            <h4>Ciphered text</h4>
+            <h5>Ciphered text</h5>
             <p id="outputHistory"></p>
-
         </div>
         <div id="internals">
-            <div></div>
+            <svg>
+                <path stroke="#fff" stroke-width="2px"></path>
+            </svg>
+            <span class="internalLabel">plugboard</span>
+            <div class="letterRow"></div>
+            <div class="letterRow"></div>
+            <span class="internalLabel">Rotor 1 (right)</span>
+            <div class="letterRow"></div>
+            <div class="letterRow"></div>
+            <span class="internalLabel">Rotor 2 (middle)</span>
+            <div class="letterRow"></div>
+            <div class="letterRow"></div>
+            <span class="internalLabel">Rotor 3 (left)</span>
+            <div class="letterRow"></div>
+            <div class="letterRow"></div>
+            <span class="internalLabel">Reflector</span>
+            <div class="letterRow"></div>
         </div>
     </div>
     <script src="script.js"></script>

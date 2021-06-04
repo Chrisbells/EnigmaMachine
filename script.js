@@ -97,18 +97,22 @@ class Plugboard {
     }
 }
 class Enigma {
-    constructor(rotors, reflector, plugboard) {
+    constructor(rotors, reflector, plugboard, internalsView) {
         this.rotors = rotors
         this.reflector = reflector
         this.plugboard = plugboard
-        document.querySelector("#rotorPositionsDisplay").innerHTML=this.getPositions().join("&nbsp".repeat(5))
+        this.internalsView = internalsView
+        this.internalsView.updateLetterRows(this.getPositions(0))
+        this.internalsView.updateSizing()
+        document.querySelector("#rotorPositionsDisplay").innerHTML = this.getPositions(1).join("&nbsp".repeat(5))
     }
     input(letter) {
         let out = letter
-        let path = []
+        let path = [letter]
         //going right to left through rotors
         let pair = this.plugboard.getPairedLetter(letter)
         out = pair != -1 ? pair : out
+        path.push(out)
         for (let rotor = this.rotors.length - 1; rotor >= 0; rotor--) {
             out = this.rotors[rotor].inputFromRight(out)
             path.push(out)
@@ -123,7 +127,10 @@ class Enigma {
         }
         pair = this.plugboard.getPairedLetter(out)
         out = pair != -1 ? pair : out
-        return { "out": out, "path": path }
+        path.push(out)
+        this.internalsView.updateLetterRows(this.getPositions(0))
+        this.internalsView.draw(path)
+        return out
     }
     increment() {
         //when a rotor is at its turnover position and increments then the next rotor over also increments
@@ -139,10 +146,74 @@ class Enigma {
         }
         this.rotors[2].increment()
     }
-    getPositions(){
-        return[this.rotors[0].position+1,this.rotors[1].position+1,this.rotors[2].position+1]
+    getPositions(o) {
+        return [this.rotors[0].position + o, this.rotors[1].position + o, this.rotors[2].position + o]
     }
 }
+
+class InternalsView {
+    constructor() {
+        this.rowLetters = []
+        this.displayElement = document.querySelector("#internals")
+        this.rows = this.displayElement.querySelectorAll(".letterRow")
+        this.displaySvg = this.displayElement.querySelector("svg")
+        this.displaySvgPath = this.displaySvg.querySelector("path")
+        alphabet.forEach(letter => {
+            let element = document.createElement("span")
+            element.innerText = letter
+            this.rows[0].appendChild(element.cloneNode(true))
+            this.rows[1].appendChild(element.cloneNode(true))
+            this.rows[8].appendChild(element)
+        })
+    }
+    updateSizing() { // ran when letters are first rendered or on window size change
+        this.displayElementBB = this.displayElement.getBoundingClientRect()
+        this.rowBB = this.rows[0].getBoundingClientRect()
+        this.displaySvg.setAttribute('viewbox', `0 0 ${this.displayElementBB.height} ${this.displayElementBB.width}`)
+        this.displaySvg.setAttribute('height', this.displayElementBB.height)
+        this.displaySvg.setAttribute('width', this.displayElementBB.width)
+    }
+    getMiddleCoord(row, letter, isBottom = false) {
+        let elBB = this.rows[row].querySelectorAll("span")[alphabet.indexOf(letter)].getBoundingClientRect()
+        return { x: elBB.x + elBB.width / 2 - this.displayElementBB.x, y: elBB.y - this.displayElementBB.y + this.rowBB.height * isBottom }
+    }
+    updateLetterRows(rotorPositions) {
+        for (let i = 2; i < 8; i++) {
+            this.rows[i].innerHTML = ""
+        }
+        this.rowLetters = []
+        rotorPositions.forEach((position, index) => {
+            let row = alphabet.slice(26 - position, 26).concat(alphabet.slice(0, 26 - position))
+            this.rowLetters.unshift(row)
+            row.forEach(letter => {
+                let element = document.createElement("span")
+                element.innerText = letter
+                this.rows[6 - (index * 2)].appendChild(element.cloneNode(true))
+                this.rows[7 - (index * 2)].appendChild(element)
+            })
+        })
+    }
+    draw(enigmaStages) {
+        let path = ""
+        let split = [enigmaStages.slice(0, 5), enigmaStages.slice(5, 10).reverse()]
+        split.forEach(stages => {
+            for (let i = 0; i < 7; i += 2) {
+                let li = parseInt(i / 2)
+                let coord = this.getMiddleCoord(i, stages[li], true)
+                path += `M ${coord.x},${coord.y} `
+                coord = this.getMiddleCoord(i + 1, stages[li + 1], false)
+                path += `L ${coord.x},${coord.y} `
+                coord = this.getMiddleCoord(i + 1, stages[li + 1], true)
+                path += `M ${coord.x},${coord.y} `
+                //letter doesnt matter here\/
+                coord.y = this.getMiddleCoord(i + 2, "A", false).y
+                path += `L ${coord.x},${coord.y} `
+            }
+        })
+        this.displaySvgPath.setAttribute("d", path)
+    }
+}
+
 // ********** ui stuff **********
 
 //default enigma machine using rotors I-II-III and all in first position
@@ -151,7 +222,7 @@ let enigma = new Enigma([
     new Rotor(0, "A"),
     new Rotor(1, "A"),
     new Rotor(2, "A")
-], new Reflector(1), new Plugboard())
+], new Reflector(1), new Plugboard(), new InternalsView())
 
 let inHistory = document.querySelector("#inputHistory")
 let outHistory = document.querySelector("#outputHistory")
@@ -181,8 +252,8 @@ quertz.forEach((letter, index) => {
     plugboardPlug.className = "plug"
     plugboardButton.className = "plugButton"
 
-    key.ariaLabel="keyboard button "+letter
-    plugboardButton.ariaLabel = "plug board button "+ letter
+    key.ariaLabel = "keyboard button " + letter
+    plugboardButton.ariaLabel = "plug board button " + letter
 
     //value doesnt actually serve any functionality besides easily associating the letter with the button
     plugboardButton.value = letter
@@ -204,20 +275,20 @@ quertz.forEach((letter, index) => {
     plugboardButtons.push(plugboardButton)
 })
 //position input behavior
-document.querySelectorAll(".rotorPositonOption").forEach(el=>{
-    el.addEventListener("focus",el=>{
-        el.target.placeholder=el.target.value
-        el.target.value=""
+document.querySelectorAll(".rotorPositonOption").forEach(el => {
+    el.addEventListener("focus", el => {
+        el.target.placeholder = el.target.value
+        el.target.value = ""
     })
-    el.addEventListener("input",el=>{
-        el.target.value=el.target.value.toUpperCase()
+    el.addEventListener("input", el => {
+        el.target.value = el.target.value.toUpperCase()
         el.target.blur()
     })
-    el.addEventListener("focusout",el=>{
-        if (el.target.value==""){
-            el.target.value=el.target.placeholder
+    el.addEventListener("focusout", el => {
+        if (el.target.value == "") {
+            el.target.value = el.target.placeholder
         }
-        el.target.placeholder=""
+        el.target.placeholder = ""
     })
 })
 //physical keyboard support
@@ -236,8 +307,7 @@ document.querySelector("#updateSettings").addEventListener("click", () => {
         new Rotor(rotorSelections[0].value, rotorPositions[0].value),
         new Rotor(rotorSelections[1].value, rotorPositions[1].value),
         new Rotor(rotorSelections[2].value, rotorPositions[2].value)
-    ], new Reflector(reflector.value),enigma.plugboard)
-    //^keeps plugboard
+    ], new Reflector(reflector.value), enigma.plugboard, enigma.internalsView)
     inHistory.innerHTML = outHistory.innerHTML = ""
 })
 
@@ -246,11 +316,10 @@ function handleInput(letter) {
     key.classList.add("pressed")
     setTimeout(_ => key.classList.remove("pressed"), (200));
     out = enigma.input(letter)
-    //showPath(out.path)
-    document.querySelector("#rotorPositionsDisplay").innerHTML=enigma.getPositions().join("&nbsp".repeat(5))
-    lightLamp(out.out)
+    document.querySelector("#rotorPositionsDisplay").innerHTML = enigma.getPositions(1).join("&nbsp".repeat(5))
+    lightLamp(out)
     inHistory.innerHTML += letter
-    outHistory.innerHTML += out.out
+    outHistory.innerHTML += out
     enigma.increment()
 }
 function lightLamp(letter) {
@@ -272,3 +341,6 @@ function handlePlugboardChange(button) {
         }
     }
 }
+window.addEventListener("resize", () => {
+    enigma.internalsView.updateSizing()
+})
