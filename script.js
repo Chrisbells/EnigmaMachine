@@ -183,7 +183,7 @@ class InternalsView {
         }
         this.rowLetters = []
         rotorPositions.forEach((position, index) => {
-            let row = alphabet.slice(26 - position, 26).concat(alphabet.slice(0, 26 - position))
+            let row = alphabet.slice(position).concat(alphabet.slice(0,position))
             this.rowLetters.unshift(row)
             row.forEach(letter => {
                 let element = document.createElement("span")
@@ -316,11 +316,11 @@ function handleInput(letter) {
     key.classList.add("pressed")
     setTimeout(_ => key.classList.remove("pressed"), (200));
     out = enigma.input(letter)
-    document.querySelector("#rotorPositionsDisplay").innerHTML = enigma.getPositions(1).join("&nbsp".repeat(5))
     lightLamp(out)
     inHistory.innerHTML += letter
     outHistory.innerHTML += out
     enigma.increment()
+    document.querySelector("#rotorPositionsDisplay").innerHTML = enigma.getPositions(1).join("&nbsp".repeat(5))
 }
 function lightLamp(letter) {
     let el = lamps[quertz.indexOf(letter)]
